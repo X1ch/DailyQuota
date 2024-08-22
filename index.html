@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyQuota</title>
+    <link rel="stylesheet" href="indexstyles.css">
+    <script src="script.js" defer></script>
+    <style>
+        #updateButton {
+            display: none;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .favorite{
+            position: relative;
+            width: 150px;
+            top: 50px;
+        }
+        .like {
+            position: relative;
+            left: 35%;
+            width: 30px;
+            top: 50px;
+        }
+        .share {
+            position: relative;
+            left: 35%;
+            width: 30px;
+            top: 50px;
+        }
+        .quota {
+            position: relative;
+            top: 50px;
+            font-size: 14pt;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+  <div id="heaad"> <h1>DailyQuota - ежедневные мотивирующие фразы</h1></div>
+  <div class="quota" id="Quota"></div>
+  <div class="button">
+    <img class="favorite" src="favorite.svg" id="favoritebutton" alt="Избранное" onclick="window.location.href='favorite.html'">
+    <img class="share" src="share.svg" id="sharebutton" alt="Поделиться">
+    <img class="like" src="like.svg" id="likebutton" alt="Нравиться">  
+  </div>
+
+
+  <script>
+    // Функция для открытия окна обмена
+    function share() {
+        const quote = document.getElementById('Quota').innerText;
+        const url = encodeURIComponent(window.location.href); // URL текущей страницы
+        const text = encodeURIComponent(quote); // Текст фразы
+
+        // Ссылки для ВКонтакте и Telegram
+        const vkShareUrl = `https://vk.com/share.php?url=${url}&title=${text}`;
+        const tgShareUrl = `https://t.me/share/url?url=${url}&text=${text}`;
+
+        // Открытие меню для выбора платформы
+        const shareMenu = document.createElement('div');
+        shareMenu.style.position = 'fixed';
+        shareMenu.style.top = '10px';
+        shareMenu.style.right = '10px';
+        shareMenu.style.background = '#fff';
+        shareMenu.style.border = '1px solid #ddd';
+        shareMenu.style.padding = '10px';
+        shareMenu.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+
+        shareMenu.innerHTML = `
+            <a href="${vkShareUrl}" target="_blank" style="display: block; margin-bottom: 5px;">Поделиться в ВКонтакте</a>
+            <a href="${tgShareUrl}" target="_blank">Поделиться в Telegram</a>
+        `;
+
+        document.body.appendChild(shareMenu);
+
+        // Удаляем меню через 5 секунд
+        setTimeout(() => {
+            document.body.removeChild(shareMenu);
+        }, 5000);
+    }
+
+    // Привязываем функцию к кнопке
+    document.getElementById('sharebutton').addEventListener('click', share);
+
+
+
+        // Функция для добавления цитаты в избранное
+    function addToFavorites() {
+        const quote = document.getElementById('Quota').innerText;
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+        // Проверяем, чтобы не добавлять дубликаты
+        if (!favorites.includes(quote)) {
+            favorites.push(quote);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+    }
+
+    // Функция для инициализации событий
+        document.getElementById('likebutton').addEventListener('click', addToFavorites);
+    
+
+    window.onload = init;
+  </script>
+</body>
+</html>

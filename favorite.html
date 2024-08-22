@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранные цитаты</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        #favorites {
+            max-width: 800px;
+            margin: auto;
+        }
+        .quote {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .back{
+            position: relative;
+            top: 5px;
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="head" id="favorites">
+
+        <h1><img class="back" src="back.svg" id="backbutton" alt="Назад" onclick="window.location.href='index.html'">Избранные цитаты </h1>
+    </div>
+
+    <script>
+        // Функция для отображения избранных цитат
+        function displayFavorites() {
+            const favoritesContainer = document.getElementById('favorites');
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            if (favorites.length === 0) {
+                favoritesContainer.innerHTML += '<p>Нет сохраненных цитат.</p>';
+            } else {
+                favorites.forEach(quote => {
+                    const quoteElement = document.createElement('div');
+                    quoteElement.className = 'quote';
+                    quoteElement.innerText = quote;
+                    favoritesContainer.appendChild(quoteElement);
+                });
+            }
+        }
+
+        // Вызов функции при загрузке страницы
+        window.onload = displayFavorites;
+    </script>
+</body>
+</html>
